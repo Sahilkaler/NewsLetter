@@ -1,6 +1,7 @@
 const express = require("express");
 const request = require("request");
 const bodyParser = require("body-parser");
+const https = require("https");
 
 
 const app = express();
@@ -13,11 +14,48 @@ app.get("/",function(req,res){
 });
 
 app.post("/",function(req,res){
-    var firstName = req.body.fName;
-    var secondName = req.body.lName;
+    const firstName = req.body.fName;
+    const lastName = req.body.lName;
     var email = req.body.email;
-})
+
+    const data = {
+        members: [
+            {
+                email_address: email,
+                status: "subscribed",
+                merge_fields:{
+                    FNAME: firstName,
+                    LNAME: lastName,
+                }
+            }
+        ]
+    };
+
+    const jsonData = JSON.stringify(data);
+
+    const url = "https://us21.api.mailchimp.com/3.0/lists/6c68e63b4f";
+
+    const options = {
+        method: "POST",
+        auth : "sahil9:077cb42f5e6549f5308682508ddb2e0b-us21"
+    }
+
+    const request = https.request(url, options , function(response){
+            response.on("data", function(data){
+                console.log(JSON.parse(data));
+            })
+    })
+
+    request.write(jsonData);
+    request.end();
+
+});
 
 app.listen(5000, function(){
     console.log("Server is running on port 5000");
 });
+
+
+//api key 6d230c305e525c629c6f1e26fa41c8ec-us2
+//077cb42f5e6549f5308682508ddb2e0b-us21
+//unique id 6c68e63b4f
