@@ -43,9 +43,10 @@ app.post("/",function(req,res){
 
     const request = https.request(url, options , function(response){
         if(response.statusCode === 200){
-            res.sendFile(__dirname + "/success.html");
-        }else{
-            res.sendFile(__dirname + "/failure.html");
+            res.sendFile(__dirname + "/success.html")
+        }
+        else{
+            res.sendFile(__dirname + "/failure.html")
         }
 
             response.on("data", function(data){
@@ -63,10 +64,8 @@ app.post("/failure" , function(req,res){
 
 })
 
-app.listen(5000, function(){
+app.listen(process.env.PORT || 5000, function(){
     console.log("Server is running on port 5000");
 });
 
 
-//api key 5c5aa0938f307a6e148267ae25efbb88-us21
-//unique id 6c68e63b4f
