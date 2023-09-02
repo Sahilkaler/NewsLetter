@@ -36,11 +36,18 @@ app.post("/",function(req,res){
     const url = "https://us21.api.mailchimp.com/3.0/lists/6c68e63b4f";
 
     const options = {
-        method: "POST",
-        auth : "sahil9:077cb42f5e6549f5308682508ddb2e0b-us21"
+        method: "POST", 
+        auth : "sahil9:5c5aa0938f307a6e148267ae25efbb88-us21"
     }
 
+
     const request = https.request(url, options , function(response){
+        if(response.statusCode === 200){
+            res.sendFile(__dirname + "/success.html");
+        }else{
+            res.sendFile(__dirname + "/failure.html");
+        }
+
             response.on("data", function(data){
                 console.log(JSON.parse(data));
             })
@@ -51,11 +58,15 @@ app.post("/",function(req,res){
 
 });
 
+app.post("/failure" , function(req,res){
+    res.redirect("/")
+
+})
+
 app.listen(5000, function(){
     console.log("Server is running on port 5000");
 });
 
 
-//api key 6d230c305e525c629c6f1e26fa41c8ec-us2
-//077cb42f5e6549f5308682508ddb2e0b-us21
+//api key 5c5aa0938f307a6e148267ae25efbb88-us21
 //unique id 6c68e63b4f
